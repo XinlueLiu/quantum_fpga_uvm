@@ -2,8 +2,8 @@ module single_qubit (
     input logic clk, rst_n,
     input logic signed [15:0] alpha_real,  // a+bj, value a
     input logic signed [15:0] alpha_imag,  // a+bj, value b
-    input logic signed [15:0] beta_real,   // a+bj, value a
-    input logic signed [15:0] beta_imag,   // a+bj, value b
+    input logic signed [15:0] beta_real,   // c+dj, value c
+    input logic signed [15:0] beta_imag,   // c+dj, value d
     input logic load_en,                   // 0:not loading initial alpha and beta. 1: initial loading. tb will load for 1 clock cycle to read
     input logic measure_en,                // 0:not measuring initial alpha and beta. 1: initial measurement
     input logic [2:0] read_addr,           // address tb wants to read after measurement
