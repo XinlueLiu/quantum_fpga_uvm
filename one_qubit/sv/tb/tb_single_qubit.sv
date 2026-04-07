@@ -154,7 +154,7 @@ end
 
 // Waveform dump
 initial begin
-    $dumpfile("qubit_measure_wave.vcd");
+    $dumpfile("single_qubit.vcd");
     $dumpvars(0, tb_single_qubit);
 end
 
