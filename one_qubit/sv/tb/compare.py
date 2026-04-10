@@ -1,7 +1,7 @@
 import csv
 import sys
 
-TOLERANCE = 1e-6
+TOLERANCE = 1e-10
 
 def load_csv(path):
     with open(path) as f:
