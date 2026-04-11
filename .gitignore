@@ -2,3 +2,4 @@
 python/
 *.log
 *.csv
+*DS*

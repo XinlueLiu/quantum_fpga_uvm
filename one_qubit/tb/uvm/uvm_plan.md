@@ -113,7 +113,7 @@ Also monitors `load_en` transactions — sends these to the predictor so it can 
 
 - Subscribes to monitor's `input_ap`
 - Maintains its own copy of the qubit state as **doubles**
-- On load transaction: stores the loaded state (converting Q1.14 → double)
+- On load transaction: stores the loaded state (converting Q1.15 → double)
 - On gate transaction: calls C++ ref model via DPI-C with current double state + gate_select, updates its internal state with the result
 - Sends expected output as doubles to scoreboard via `expected_ap`
 
@@ -131,11 +131,11 @@ Thin layer:
 Two TLM input ports:
 
 - From predictor: expected state as **doubles**
-- From monitor's `output_ap`: actual state as **Q1.14**
+- From monitor's `output_ap`: actual state as **Q1.15**
 
 On comparison:
 
-1. Convert predictor doubles → Q1.14 (multiply by 2^14, truncate toward zero, clamp to signed 16-bit)
+1. Convert predictor doubles → Q1.15 (multiply by 2^15, truncate toward zero, clamp to signed 16-bit)
 2. Compare all 4 components bit-exact (or within configured LSB tolerance)
 3. On mismatch, log both formats: `"expected 0.7071 (Q: 0x5A82), got Q: 0x5A80"`
 4. Track pass/fail counts, report in `report_phase`
@@ -172,7 +172,7 @@ Takes `qubit_env_config` from config_db.
 
 ## 13. Env Config — `qubit_env_config.sv`
 
-- `int frac_bits = 14` — Q-format fractional bits
+- `int frac_bits = 15` — Q-format fractional bits
 - `int tolerance_lsb = 0` — 0 for sign-off, >0 for bring-up debug
 - `bit has_coverage = 1` — enable/disable coverage collector
 - `bit is_active = 1` — agent mode
