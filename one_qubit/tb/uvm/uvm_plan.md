@@ -5,22 +5,22 @@
 ```
 tb/uvm/
 ├── tb_top.sv                   # Top-level: clock, reset, DUT, interface, run_test()
-├── qubit_pkg.sv                # Package: imports UVM, includes all UVM files below
-├── qubit_if.sv                 # Interface matching quantum_gate_controller ports
-├── qubit_seq_item.sv           # Transaction object
-├── qubit_base_seq.sv           # Base sequence (single gate operation)
-├── qubit_random_seq.sv         # Constrained-random sequence
-├── qubit_directed_seq.sv       # Corner-case directed sequence
-├── qubit_driver.sv             # Drives load_en, gate_evolve, gate_select, state inputs
-├── qubit_sequencer.sv          # Routes seq_items to driver
-├── qubit_monitor.sv            # Samples interface, emits transactions on analysis ports
-├── qubit_predictor.sv          # Calls C++ ref model via DPI-C, emits expected output
-├── qubit_scoreboard.sv         # Compares RTL output vs predictor, double→Q conversion
-├── qubit_coverage.sv           # Functional coverage collector
-├── qubit_agent.sv              # Builds driver, sequencer, monitor
-├── qubit_env_config.sv         # Config object (Q-format params, tolerance)
-├── qubit_env.sv                # Builds agent, predictor, scoreboard, coverage, wiring
-├── qubit_base_test.sv          # Base test class
+├── tb_quantum_gates_pkg.sv                # Package: imports UVM, includes all UVM files below
+├── tb_quantum_gates_if.sv                 # Interface matching quantum_gate_controller ports
+├── tb_quantum_gates_seq_item.sv           # Transaction object
+├── tb_quantum_gates_base_seq.sv           # Base sequence (single gate operation)
+├── tb_quantum_gates_random_seq.sv         # Constrained-random sequence
+├── tb_quantum_gates_directed_seq.sv       # Corner-case directed sequence
+├── tb_quantum_gates_driver.sv             # Drives load_en, gate_evolve, gate_select, state inputs
+├── tb_quantum_gates_sequencer.sv          # Routes seq_items to driver
+├── tb_quantum_gates_monitor.sv            # Samples interface, emits transactions on analysis ports
+├── tb_quantum_gates_predictor.sv          # Calls C++ ref model via DPI-C, emits expected output
+├── tb_quantum_gates_scoreboard.sv         # Compares RTL output vs predictor, double→Q conversion
+├── tb_quantum_gates_coverage.sv           # Functional coverage collector
+├── tb_quantum_gates_agent.sv              # Builds driver, sequencer, monitor
+├── tb_quantum_gates_env_config.sv         # Config object (Q-format params, tolerance)
+├── tb_quantum_gates_env.sv                # Builds agent, predictor, scoreboard, coverage, wiring
+├── tb_quantum_gates_base_test.sv          # Base test class
 └── Makefile                    # Compile & run targets
 ```
 
@@ -33,7 +33,7 @@ model/
 └── ref_model_dpi.cpp             # NEW — thin DPI-C wrapper
 ```
 
-## 2. Interface — `qubit_if.sv`
+## 2. Interface — `tb_quantum_gates_if.sv`
 
 Mirrors `quantum_gate_controller` ports:
 
@@ -48,7 +48,7 @@ Two clocking blocks:
 - **driver_cb** `@(posedge clk)` — drives inputs
 - **monitor_cb** `@(posedge clk)` — samples all signals
 
-## 3. Sequence Item — `qubit_seq_item.sv`
+## 3. Sequence Item — `tb_quantum_gates_seq_item.sv`
 
 Fields:
 
@@ -65,9 +65,9 @@ Constraints:
 
 ## 4. Sequences
 
-**`qubit_base_seq`** — abstract parent, provides `body()` framework
+**`tb_quantum_gates_base_seq`** — abstract parent, provides `body()` framework
 
-**`qubit_directed_seq`** — explicit test vectors:
+**`tb_quantum_gates_directed_seq`** — explicit test vectors:
 
 - Load |0⟩ → apply each gate → check known results
 - Load |1⟩ → apply each gate
@@ -75,15 +75,15 @@ Constraints:
 - Identity checks: X→X, H→H (should return to original state)
 - Chain: load |0⟩ → H → Z → H → should give |1⟩
 
-**`qubit_random_seq`** — N iterations:
+**`tb_quantum_gates_random_seq`** — N iterations:
 
 - First item: `is_load = 1` with random initial state
 - Remaining items: `is_load = 0`, random `gate_select`
 - Configurable chain length before reloading
 
-## 5. Driver — `qubit_driver.sv`
+## 5. Driver — `tb_quantum_gates_driver.sv`
 
-Gets `qubit_seq_item` from sequencer. Two modes based on `is_load`:
+Gets `tb_quantum_gates_seq_item` from sequencer. Two modes based on `is_load`:
 
 **Load transaction:**
 
@@ -98,7 +98,7 @@ Gets `qubit_seq_item` from sequencer. Two modes based on `is_load`:
 3. Wait for `gate_done` to go high (next cycle)
 4. Deassert, `item_done()`
 
-## 6. Monitor — `qubit_monitor.sv`
+## 6. Monitor — `tb_quantum_gates_monitor.sv`
 
 Two analysis ports:
 
@@ -109,7 +109,7 @@ Key detail: on `gate_evolve`, the monitor must capture the current output signal
 
 Also monitors `load_en` transactions — sends these to the predictor so it can track internal state.
 
-## 7. Predictor — `qubit_predictor.sv`
+## 7. Predictor — `tb_quantum_gates_predictor.sv`
 
 - Subscribes to monitor's `input_ap`
 - Maintains its own copy of the qubit state as **doubles**
@@ -126,7 +126,7 @@ Thin layer:
 - Calls existing `apply_quantum_gate()`
 - Returns results through output pointers
 
-## 9. Scoreboard — `qubit_scoreboard.sv`
+## 9. Scoreboard — `tb_quantum_gates_scoreboard.sv`
 
 Two TLM input ports:
 
@@ -140,7 +140,7 @@ On comparison:
 3. On mismatch, log both formats: `"expected 0.7071 (Q: 0x5A82), got Q: 0x5A80"`
 4. Track pass/fail counts, report in `report_phase`
 
-## 10. Coverage — `qubit_coverage.sv`
+## 10. Coverage — `tb_quantum_gates_coverage.sv`
 
 Subscribes to monitor's `input_ap`.
 
@@ -152,13 +152,13 @@ Covergroups:
 - **chain_cg** — consecutive gate pairs (X→H, H→Z, etc.) to catch state-dependent bugs
 - **load_then_gate** — that every gate type is tested after a fresh load
 
-## 11. Agent — `qubit_agent.sv`
+## 11. Agent — `tb_quantum_gates_agent.sv`
 
 - Active mode: builds driver + sequencer + monitor
 - Passive mode: monitor only
 - Connects sequencer to driver, exposes monitor's analysis ports
 
-## 12. Environment — `qubit_env.sv`
+## 12. Environment — `tb_quantum_gates_env.sv`
 
 Builds and wires:
 
@@ -168,45 +168,45 @@ Agent → Monitor ──[input_ap]──→ Predictor ──[expected_ap]──�
                  ──[input_ap]──→ Coverage
 ```
 
-Takes `qubit_env_config` from config_db.
+Takes `tb_quantum_gates_env_config` from config_db.
 
-## 13. Env Config — `qubit_env_config.sv`
+## 13. Env Config — `tb_quantum_gates_env_config.sv`
 
 - `int frac_bits = 15` — Q-format fractional bits
 - `int tolerance_lsb = 0` — 0 for sign-off, >0 for bring-up debug
 - `bit has_coverage = 1` — enable/disable coverage collector
 - `bit is_active = 1` — agent mode
 
-## 14. Base Test — `qubit_base_test.sv`
+## 14. Base Test — `tb_quantum_gates_base_test.sv`
 
 - Creates env config, sets in config_db
 - Creates env
-- Default: runs `qubit_directed_seq` then `qubit_random_seq`
+- Default: runs `tb_quantum_gates_directed_seq` then `tb_quantum_gates_random_seq`
 - `report_phase`: check scoreboard pass/fail
 
 ## 15. tb_top.sv
 
 - Clock generation (10ns period or whatever you prefer)
 - Reset sequence (active-low, hold for N cycles)
-- `qubit_if` instantiation, connected to clock
+- `tb_quantum_gates_if` instantiation, connected to clock
 - `quantum_gate_controller` DUT instantiation, connected to interface
-- `uvm_config_db#(virtual qubit_if)::set` for the agent
+- `uvm_config_db#(virtual tb_quantum_gates_if)::set` for the agent
 - `run_test()`
 
 ## 16. Build Order
 
 | Step | What | Validates |
 |------|-------|-----------|
-| 1 | `qubit_if.sv` + `tb_top.sv` | DUT compiles and connects |
-| 2 | `qubit_seq_item.sv` | Transaction compiles |
-| 3 | `qubit_driver.sv` + `qubit_sequencer.sv` | Can drive load + gate_evolve, check waveforms |
-| 4 | `qubit_monitor.sv` | Transactions printed to log, verify timing |
+| 1 | `tb_quantum_gates_if.sv` + `tb_top.sv` | DUT compiles and connects |
+| 2 | `tb_quantum_gates_seq_item.sv` | Transaction compiles |
+| 3 | `tb_quantum_gates_driver.sv` + `tb_quantum_gates_sequencer.sv` | Can drive load + gate_evolve, check waveforms |
+| 4 | `tb_quantum_gates_monitor.sv` | Transactions printed to log, verify timing |
 | 5 | `ref_model_dpi.cpp` | DPI-C links and returns correct values |
-| 6 | `qubit_predictor.sv` | Expected values match hand calculations |
-| 7 | `qubit_scoreboard.sv` | Automated pass/fail, double→Q conversion correct |
-| 8 | `qubit_agent.sv` + `qubit_env.sv` + `qubit_base_test.sv` | Full end-to-end run |
-| 9 | `qubit_directed_seq.sv` | Known-answer tests pass |
-| 10 | `qubit_random_seq.sv` + `qubit_coverage.sv` | Coverage closure |
+| 6 | `tb_quantum_gates_predictor.sv` | Expected values match hand calculations |
+| 7 | `tb_quantum_gates_scoreboard.sv` | Automated pass/fail, double→Q conversion correct |
+| 8 | `tb_quantum_gates_agent.sv` + `tb_quantum_gates_env.sv` + `tb_quantum_gates_base_test.sv` | Full end-to-end run |
+| 9 | `tb_quantum_gates_directed_seq.sv` | Known-answer tests pass |
+| 10 | `tb_quantum_gates_random_seq.sv` + `tb_quantum_gates_coverage.sv` | Coverage closure |
 
 ## 17. What Transfers to Multi-Qubit
 
