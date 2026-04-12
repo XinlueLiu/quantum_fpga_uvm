@@ -1,21 +1,26 @@
 # Quantum FPGA
 
-A 1-qubit quantum state simulator implemented in SystemVerilog.
+A 1-qubit quantum state simulator in SystemVerilog with UVM verification.
 
 ## What's Here
 
-- **`one_qubit/sv/rtl/single_qubit.sv`** — Qubit state vector storage, P(0) computation, and LFSR-based measurement in Q1.15 fixed-point
-- **`one_qubit/sv/rtl/quantum_gates.sv`** — Combinational gate unit supporting X, Y, Z, and H gates
-- **`one_qubit/sv/rtl/lfsr.sv`** — 15-bit Fibonacci LFSR for pseudo-random measurement
-- **`one_qubit/sv/tb/tb_single_qubit.sv`** — Testbench verifying all 6 Bloch sphere basis states
+All source lives under `one_qubit/`:
+
+- **design/** — Qubit and quantum gate RTL (SystemVerilog)
+- **model/** — C++ reference model for quantum gates
+- **tb/**
+  - `model_tb/` — Python verification of the C++ model against Qiskit
+  - `sv_tb/` — SystemVerilog testbench for the 1-qubit system
+  - `uvm/` — Full UVM environment: constrained-random tests, functional coverage, assertions, testplan
 
 ## Build & Simulate
 
 Requires [Icarus Verilog](https://github.com/steveicarus/iverilog) and [GTKWave](https://gtkwave.sourceforge.net/).
 
 ```bash
-cd one_qubit/sv
-make sim          # Compile and run testbench
-make wave         # Run sim then open waveform in GTKWave
+cd one_qubit
+make sim              # Compile and run SV testbench
+make wave             # Run sim then open waveform in GTKWave
+make verify_golden    # Build C++ model, run Qiskit reference, compare results
 make clean
 ```
