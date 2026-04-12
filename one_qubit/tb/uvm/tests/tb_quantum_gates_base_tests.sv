@@ -9,6 +9,7 @@ class tb_quantum_gates_base_tests extends uvm_test;
          The Virtual Sequencer is built in the Environment and acts as a "map". It holds pointers to all the physical sequencers. This saves the Test from having to manually wire many different agents into the sequence. 
          The Virtual Sequence runs on the Virtual Sequencer, reads the map, and tells standard sequences to start running on their respective physical sequencers.*/
     tb_quantum_gates_seq q_seq;
+    virtual quantum_gate_if q_vif;
 
     function new(string name = "tb_quantum_gates_base_tests", uvm_component parent = null);
         super.new(name, parent);
@@ -17,12 +18,17 @@ class tb_quantum_gates_base_tests extends uvm_test;
     virtual function void build_phase (uvm_phase phase);
         super.build_phase(phase);
 
+        if (!uvm_config_db #(virtual quantum_gate_if)::get(this, "", "q_vif", q_vif))
+            `uvm_fatal(get_type_name(), "Failed to get virtual qif")
+
         q_env_cfg = tb_quantum_gates_env_cfg::type_id::create("q_env_cfg");
         q_env_cfg.is_active = UVM_ACTIVE;
         q_env_cfg.has_coverage = 1;
-        q_env_cfg.has_scb= 1;
+        q_env_cfg.has_scb = 1;
+        q_env_cfg.q_vif = q_vif;
 
         // no virtual because already a class
+        // set path this.q_env, so setting it to tests.q_env
         uvm_config_db #(tb_quantum_gates_env_cfg)::set(this, "q_env", "q_env_cfg", q_env_cfg);
 
         q_env = tb_quantum_gates_env::type_id::create("q_env", this);
