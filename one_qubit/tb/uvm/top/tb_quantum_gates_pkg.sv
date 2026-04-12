@@ -5,11 +5,10 @@ package tb_quantum_gates_pkg;
 `include "uvm_macros.svh"
 import uvm_pkg::*;
 
-// sequences
-`include "env/sequences/tb_quantum_gates_seq.sv"
-
 // tlm item
 `include "env/agent/tb_quantum_gates_item.sv"
+// sequences
+`include "env/sequences/tb_quantum_gates_seq.sv"
 
 // agent components
 `include "env/agent/tb_quantum_gates_sequencer.sv"

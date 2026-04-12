@@ -1,6 +1,6 @@
 <mxfile host="65bd71144e">
     <diagram name="UVM Testbench" id="uvm_tb">
-        <mxGraphModel dx="1442" dy="597" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" math="0" shadow="0">
+        <mxGraphModel dx="969" dy="517" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -8,16 +8,13 @@
                     <mxGeometry x="200" y="10" width="500" height="30" as="geometry"/>
                 </mxCell>
                 <mxCell id="tb_top" value="tb_top" style="rounded=1;whiteSpace=wrap;fillColor=none;strokeColor=#666666;fontSize=14;fontStyle=1;verticalAlign=top;align=left;spacingLeft=10;spacingTop=5;arcSize=3;" parent="1" vertex="1">
-                    <mxGeometry x="20" y="50" width="960" height="750" as="geometry"/>
-                </mxCell>
-                <mxCell id="test" value="qubit_base_test&#xa;(uvm_test)" style="rounded=1;whiteSpace=wrap;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;fontStyle=1;" parent="1" vertex="1">
-                    <mxGeometry x="60" y="80" width="160" height="50" as="geometry"/>
+                    <mxGeometry x="20" y="50" width="960" height="680" as="geometry"/>
                 </mxCell>
                 <mxCell id="env_box" value="qubit_env" style="rounded=1;whiteSpace=wrap;fillColor=none;strokeColor=#6c8ebf;fontSize=13;fontStyle=1;verticalAlign=top;align=left;spacingLeft=10;spacingTop=5;" parent="1" vertex="1">
-                    <mxGeometry x="40" y="150" width="720" height="630" as="geometry"/>
+                    <mxGeometry x="40" y="150" width="560" height="460" as="geometry"/>
                 </mxCell>
                 <mxCell id="env_config" value="qubit_env_config" style="rounded=1;whiteSpace=wrap;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;" parent="1" vertex="1">
-                    <mxGeometry x="60" y="180" width="130" height="40" as="geometry"/>
+                    <mxGeometry x="130" y="110" width="130" height="40" as="geometry"/>
                 </mxCell>
                 <mxCell id="agent_box" value="qubit_agent" style="rounded=1;whiteSpace=wrap;fillColor=none;strokeColor=#d79b00;fontSize=12;fontStyle=1;verticalAlign=top;align=left;spacingLeft=10;spacingTop=5;" parent="1" vertex="1">
                     <mxGeometry x="60" y="240" width="260" height="280" as="geometry"/>
@@ -32,13 +29,13 @@
                     <mxGeometry x="110" y="440" width="150" height="40" as="geometry"/>
                 </mxCell>
                 <mxCell id="seq_base" value="qubit_base_seq" style="rounded=1;whiteSpace=wrap;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10;" parent="1" vertex="1">
-                    <mxGeometry x="80" y="560" width="130" height="30" as="geometry"/>
+                    <mxGeometry x="80" y="625" width="130" height="30" as="geometry"/>
                 </mxCell>
                 <mxCell id="seq_dir" value="qubit_directed_seq" style="rounded=1;whiteSpace=wrap;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10;" parent="1" vertex="1">
-                    <mxGeometry x="60" y="610" width="130" height="30" as="geometry"/>
+                    <mxGeometry x="60" y="675" width="130" height="30" as="geometry"/>
                 </mxCell>
                 <mxCell id="seq_rand" value="qubit_random_seq" style="rounded=1;whiteSpace=wrap;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10;" parent="1" vertex="1">
-                    <mxGeometry x="200" y="610" width="130" height="30" as="geometry"/>
+                    <mxGeometry x="200" y="675" width="130" height="30" as="geometry"/>
                 </mxCell>
                 <mxCell id="predictor" value="qubit_predictor&#xa;(DPI-C → C++ ref model)" style="rounded=1;whiteSpace=wrap;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;fontStyle=1;" parent="1" vertex="1">
                     <mxGeometry x="380" y="340" width="190" height="50" as="geometry"/>
@@ -59,9 +56,6 @@
                     <mxGeometry x="780" y="340" width="180" height="120" as="geometry"/>
                 </mxCell>
                 <mxCell id="e_if_dut" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#b85450;strokeWidth=2;" parent="1" source="iface" target="dut" edge="1">
-                    <mxGeometry relative="1" as="geometry"/>
-                </mxCell>
-                <mxCell id="e_test_env" value="creates" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#82b366;fontSize=10;fontStyle=2;" parent="1" source="test" target="env_box" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
                 <mxCell id="e_seq_drv" value="seq_item" style="edgeStyle=orthogonalEdgeStyle;strokeColor=#6c8ebf;strokeWidth=2;fontSize=10;" parent="1" source="sequencer" target="driver" edge="1">
@@ -134,6 +128,9 @@
                 </mxCell>
                 <mxCell id="leg5t" value="Config / Coverage" style="text;fontSize=10;align=left;" parent="1" vertex="1">
                     <mxGeometry x="640" y="623" width="110" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="3" value="qubit_test" style="rounded=1;whiteSpace=wrap;fillColor=none;strokeColor=#6c8ebf;fontSize=13;fontStyle=1;verticalAlign=top;align=left;spacingLeft=10;spacingTop=5;arcSize=1;" vertex="1" parent="1">
+                    <mxGeometry x="30" y="90" width="580" height="630" as="geometry"/>
                 </mxCell>
             </root>
         </mxGraphModel>
