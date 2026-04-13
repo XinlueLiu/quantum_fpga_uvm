@@ -21,7 +21,7 @@ class tb_quantum_gates_env extends uvm_env;
 
         q_agt = tb_quantum_gates_agt::type_id::create("q_agt", this);
         q_agt.q_vif = q_env_cfg.q_vif;
-        
+
         q_cov = tb_quantum_gates_cov::type_id::create("q_cov", this);
         q_scb = tb_quantum_gates_scb::type_id::create("q_scb", this);
         q_pred = tb_quantum_gates_pred::type_id::create("q_pred", this);
@@ -33,8 +33,8 @@ class tb_quantum_gates_env extends uvm_env;
         super.connect_phase(phase);
         // monitor produces data, and scoreboard and predictor consumes
         // analysis port broadcasts, and imp port receives the data and calls write function
-        q_agt.q_mon.item_collected_p.connect(q_scb.rtl_data_imported);
-        q_agt.q_mon.item_collected_p.connect(q_pred.rtl_data_imported);
+        q_agt.q_mon.mon_analysis_port.connect(q_scb.rtl_data_imported);
+        q_agt.q_mon.mon_analysis_port.connect(q_pred.rtl_data_imported);
         q_pred.data_export.connect(q_scb.golden_data_imported);
     endfunction : connect_phase
 endclass : tb_quantum_gates_env
