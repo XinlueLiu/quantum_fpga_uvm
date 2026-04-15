@@ -35,6 +35,6 @@ class tb_quantum_gates_env extends uvm_env;
         // analysis port broadcasts, and imp port receives the data and calls write function
         q_agt.q_mon.mon_analysis_port.connect(q_scb.rtl_data_imported);
         q_agt.q_mon.mon_analysis_port.connect(q_pred.rtl_data_imported);
-        q_pred.data_export.connect(q_scb.golden_data_imported);
+        q_pred.analysis_export.connect(q_scb.golden_data_imported);
     endfunction : connect_phase
 endclass : tb_quantum_gates_env
