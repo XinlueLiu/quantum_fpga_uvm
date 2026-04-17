@@ -33,8 +33,8 @@ class tb_quantum_gates_env extends uvm_env;
         super.connect_phase(phase);
         // monitor produces data, and scoreboard and predictor consumes
         // analysis port broadcasts, and imp port receives the data and calls write function
-        q_agt.q_mon.mon_analysis_port.connect(q_scb.rtl_data_imported);
-        q_agt.q_mon.mon_analysis_port.connect(q_pred.rtl_data_imported);
-        q_pred.analysis_export.connect(q_scb.golden_data_imported);
+        q_agt.q_mon.mon_analysis_port.connect(q_scb.actual_data_imp_port);
+        q_agt.q_mon.mon_analysis_port.connect(q_pred.analysis_export);
+        q_pred.pred_golden_data_ap.connect(q_scb.expected_data_imp_port);
     endfunction : connect_phase
 endclass : tb_quantum_gates_env
