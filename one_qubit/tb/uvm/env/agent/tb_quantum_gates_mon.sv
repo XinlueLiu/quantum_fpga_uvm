@@ -6,7 +6,7 @@ class tb_quantum_gates_mon extends uvm_monitor;
     uvm_analysis_port #(tb_quantum_gates_item) mon_analysis_port;
     
     function new(string name = "tb_quantum_gates_mon", uvm_component parent);
-        super.new(name, parent)
+        super.new(name, parent);
     endfunction : new
 
     virtual function void build_phase(uvm_phase phase);
@@ -17,8 +17,8 @@ class tb_quantum_gates_mon extends uvm_monitor;
     virtual task run_phase(uvm_phase phase);
         super.run_phase(phase);
         // object should not take parent. second argument is for component only
-        tb_quantum_gates_item q_obj = tb_quantum_gates_item::type_id::create("q_obj");
         forever begin
+            tb_quantum_gates_item q_obj = tb_quantum_gates_item::type_id::create("q_obj");
             @(q_vif.mon_cb);
             q_obj.load_en = q_vif.mon_cb.load_en;
             q_obj.gate_evolve = q_vif.mon_cb.gate_evolve;
