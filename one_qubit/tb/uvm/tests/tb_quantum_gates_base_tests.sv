@@ -34,21 +34,27 @@ class tb_quantum_gates_base_tests extends uvm_test;
         q_env = tb_quantum_gates_env::type_id::create("q_env", this);
     endfunction : build_phase
 
+    function void end_of_elaboration_phase(uvm_phase phase);                                                              
+        uvm_root::get().print_topology();                                                                                           
+    endfunction
+
     virtual task run_phase (uvm_phase phase);
         super.run_phase(phase);
 
         q_seq = tb_quantum_gates_seq::type_id::create("q_seq");
         // starts 
         phase.raise_objection(this);
+        $display("=======UVM TEST RUN_PHASE AFTER RAISING OBJECTION==========");
         // start the sequencer for this test
-        q_seq.start(q_env.q_agt.q_sequencer);
+        q_seq.start(q_env.q_agt.q_sqr);
+        $display("=======UVM TEST RUN_PHASE AFTER STARTING SEQUENCE==========");
         // finishes
         phase.drop_objection(this);
     endtask : run_phase
 
     virtual function void report_phase (uvm_phase phase);
         super.report_phase(phase);
-        if (q_env.q_scb.num_mismatch == 0) begin
+        if (q_env.q_scb.mismatch_count == 0) begin
             `uvm_info(get_type_name(), "TEST PASS", UVM_NONE)
         end else begin
             `uvm_error(get_type_name(), "TEST_FAIL")

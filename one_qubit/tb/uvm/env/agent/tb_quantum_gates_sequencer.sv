@@ -2,8 +2,8 @@
 class tb_quantum_gates_sequencer extends uvm_sequencer #(tb_quantum_gates_item);
     `uvm_component_utils(tb_quantum_gates_sequencer)
     
-    function new(string name = "tb_quantum_gates_sequencer", parent);
-        super.new(name, parent)
+    function new(string name = "tb_quantum_gates_sequencer", uvm_component parent);
+        super.new(name, parent);
     endfunction : new
 
     /*

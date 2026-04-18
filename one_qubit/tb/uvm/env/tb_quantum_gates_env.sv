@@ -3,7 +3,7 @@ class tb_quantum_gates_env extends uvm_env;
     `uvm_component_utils(tb_quantum_gates_env)
 
     tb_quantum_gates_agt q_agt;
-    tb_quantum_gates_cov q_cov;
+    // tb_quantum_gates_cov q_cov;
     tb_quantum_gates_scb q_scb;
     tb_quantum_gates_pred q_pred;
     tb_quantum_gates_env_cfg q_env_cfg;
@@ -22,7 +22,7 @@ class tb_quantum_gates_env extends uvm_env;
         q_agt = tb_quantum_gates_agt::type_id::create("q_agt", this);
         q_agt.q_vif = q_env_cfg.q_vif;
 
-        q_cov = tb_quantum_gates_cov::type_id::create("q_cov", this);
+        // q_cov = tb_quantum_gates_cov::type_id::create("q_cov", this);
         q_scb = tb_quantum_gates_scb::type_id::create("q_scb", this);
         q_pred = tb_quantum_gates_pred::type_id::create("q_pred", this);
 

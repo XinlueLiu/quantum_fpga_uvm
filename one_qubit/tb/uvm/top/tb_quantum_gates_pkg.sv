@@ -4,6 +4,7 @@ package tb_quantum_gates_pkg;
 
 `include "uvm_macros.svh"
 import uvm_pkg::*;
+import tb_quantum_gates_dpi_pkg::*;
 
 // tlm item
 `include "env/agent/tb_quantum_gates_item.sv"
@@ -24,6 +25,7 @@ import uvm_pkg::*;
 `include "env/tb_quantum_gates_scb.sv"
 
 // environment wrapper
+`include "env/tb_quantum_gates_env_cfg.sv"
 `include "env/tb_quantum_gates_env.sv"
 
 // tests

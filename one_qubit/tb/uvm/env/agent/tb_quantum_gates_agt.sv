@@ -6,7 +6,7 @@ class tb_quantum_gates_agt extends uvm_agent;
     tb_quantum_gates_sequencer q_sqr;
     virtual quantum_gate_if q_vif;
 
-    function new(name = "tb_quantum_gates_agt", parent);
+    function new(string name = "tb_quantum_gates_agt", uvm_component parent);
         super.new(name, parent);
     endfunction : new
 
@@ -14,7 +14,7 @@ class tb_quantum_gates_agt extends uvm_agent;
         super.build_phase(phase);
 
         if (get_is_active()) begin
-            q_sqr = uvm_sequencer#(tb_quantum_gates_item)::type_id::create("q_sqr", this);
+            q_sqr = tb_quantum_gates_sequencer::type_id::create("q_sqr", this);
             q_drv = tb_quantum_gates_driver::type_id::create("q_drv", this);
             q_drv.q_vif = q_vif;
         end
