@@ -42,13 +42,14 @@ class tb_quantum_gates_driver extends uvm_driver #(tb_quantum_gates_item); //#(R
         q_vif.driver_cb.alpha_imag <= q_obj.alpha_imag;
         q_vif.driver_cb.beta_real <= q_obj.beta_real;
         q_vif.driver_cb.beta_imag <= q_obj.beta_imag;
-        do begin
-            @(q_vif.driver_cb);
-            $display("DRV: t=%0t gate_done=%0b gate_evolve=%0b load_en=%0d",
-             $time, q_vif.driver_cb.gate_done, q_vif.gate_evolve, q_obj.load_en);
-        end
-        while ((!q_vif.driver_cb.gate_done) && (!q_obj.load_en));
+        @(q_vif.driver_cb);
         q_vif.driver_cb.load_en <= 0;
         q_vif.driver_cb.gate_evolve <= 0;
+        // do begin
+        //     @(q_vif.driver_cb);
+        //     $display("DRV: t=%0t rst_n=%0b gate_done=%0b gate_evolve=%0b load_en=%0d",                                            
+        //    $time, q_vif.rst_n, q_vif.driver_cb.gate_done, q_vif.gate_evolve, q_obj.load_en);
+        // end
+        // while ((!q_vif.driver_cb.gate_done) && (!q_obj.load_en));
     endtask : drive_item
 endclass : tb_quantum_gates_driver
